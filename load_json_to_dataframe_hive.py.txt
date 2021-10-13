@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[10]:
+
+
+from pyspark.sql import HiveContext
+import json
+hive_contxt = HiveContext(sc)
+hive_contxt.setConf("hive.exec.dynamic.partition", "true")
+hive_contxt.setConf("hive.exec.dynamic.partition.mode", "nonstrict")
+jsonDF = hive_contxt.read.json('hdfs://localhost:50000/HADOOP_FILE/practicefile.json')
+
+
+# In[12]:
+
+
+jsonDF.show(5)
+
+
+# In[3]:
+
+
+jsonDF.printSchema();
+
+
+# In[ ]:
+
+
+jsonDF.write.mode("append").partitionBy('country').insertInto("practice.customer_info")
+
+
+# In[ ]:
+
+
+
